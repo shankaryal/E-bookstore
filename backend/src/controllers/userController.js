@@ -59,10 +59,17 @@ exports.login = async (req, res) => {
         .json({ message: "Incorrect password", type: "password" });
     }
 
-    // Password matches, exclude password from the response
-    user.password = undefined;
+    // Password matches, prepare the user data for response
+    const userDataToSend = {
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+      firstname: user.firstname,
+      lastName: user.lastname, // Include the user's first name
+      // ... other user data you want to include
+    };
 
-    res.status(200).json({ user });
+    res.status(200).json({ user: userDataToSend });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -132,7 +139,7 @@ exports.deleteUserById = async (req, res) => {
     // Find the user by ID and delete
     const deletedUser = await User.findByIdAndDelete(userId);
     if (!deletedUser) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
     // Exclude sensitive information from the response

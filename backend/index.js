@@ -4,7 +4,8 @@ const connectDB = require("./config/db");
 require("dotenv").config();
 const bookroute = require("./src/routes/bookroute");
 const userroute = require("./src/routes/userroute");
-const commentroute = require("./src/routes/commentroute");
+// const commentroute = require("./src/routes/commentroute");
+const adminroute = require("./src/routes/adminroute");
 const path = require("path");
 
 const app = express();
@@ -30,7 +31,8 @@ app.get("/", (req, res) => {
 // app.use('/api/auth', authRoutes);
 app.use("/books", bookroute);
 app.use("/users", userroute);
-app.use("/comments", commentroute);
+// app.use("/comments", commentroute);
+app.use("/admin", adminroute);
 
 // Start the server
 const PORT = process.env.PORT || 8000;
