@@ -1,16 +1,19 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
+const Nav = ({ isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear authentication state (setIsLoggedIn) and clear localStorage
     setIsLoggedIn(false);
-    localStorage.clear();
-
-    // Redirect to the homepage or any desired route after logout
+    setIsAdmin(false);
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("firstName");
     navigate("/");
   };
+
+  const firstName = localStorage.getItem("firstName");
 
   return (
     <nav className="navbar">
@@ -20,12 +23,33 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
             Home
           </Link>
         </li>
-        {isLoggedIn ? (
-          <li className="navbar-item">
-            <button onClick={handleLogout} className="navbar-link">
-              Logout
-            </button>
-          </li>
+        {isAdmin ? (
+          <>
+            <li className="navbar-item">
+              <Link to="/addbook" className="navbar-link">
+                Add Book
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/listbook" className="navbar-link">
+                List Book
+              </Link>
+            </li>
+            {/* Display user's first name next to Logout */}
+            <li className="navbar-item">
+              <span className="navbar-link" onClick={handleLogout}>
+                Logout
+              </span>
+            </li>
+          </>
+        ) : isLoggedIn ? (
+          <>
+            <li className="navbar-item">
+              <span className="navbar-link" onClick={handleLogout}>
+                Logout({firstName})
+              </span>
+            </li>
+          </>
         ) : (
           <>
             <li className="navbar-item">
@@ -36,6 +60,11 @@ const Nav = ({ isLoggedIn, setIsLoggedIn }) => {
             <li className="navbar-item">
               <Link to="/login" className="navbar-link">
                 Login
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/admin-login" className="navbar-link">
+                Admin
               </Link>
             </li>
           </>

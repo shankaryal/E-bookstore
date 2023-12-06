@@ -48,6 +48,9 @@ const Login = ({ setIsLoggedIn }) => {
 
       if (response.status === 200) {
         localStorage.setItem("isLoggedIn", "true");
+        if (data && data.user && data.user.firstname) {
+          localStorage.setItem("firstName", data.user.firstname);
+        }
         setIsLoggedIn(true);
         navigate("/");
       } else {
