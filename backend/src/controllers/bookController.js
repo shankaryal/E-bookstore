@@ -46,13 +46,11 @@ exports.getBookById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
 // Update book by ID
 exports.updateBookById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, author, genre, description, price, publisher, image, pdf } =
-      req.body;
+    const { name, author, genre, description, price, publisher } = req.body;
 
     let book = await Book.findById(id);
     if (!book) {
@@ -67,14 +65,16 @@ exports.updateBookById = async (req, res) => {
     book.publisher = publisher || book.publisher;
     book.genre = genre || book.genre;
 
-    // Update image name if provided in the request body
-    if (image) {
-      book.image = image;
+    if (req.files && req.files.image) {
+      const { image } = req.files;
+      const imagePath = `image/${image[0].filename}`;
+      book.image = imagePath;
     }
 
-    // Update pdf name if provided in the request body
-    if (pdf) {
-      book.pdf = pdf;
+    if (req.files && req.files.pdf) {
+      const { pdf } = req.files;
+      const pdfPath = `pdf/${pdf[0].filename}`;
+      book.pdf = pdfPath;
     }
 
     const updatedBook = await book.save();

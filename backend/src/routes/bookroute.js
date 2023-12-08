@@ -33,9 +33,6 @@ router.post(
 // Route to get a book by ID
 router.get("/:id", bookController.getBookById);
 
-// Route to update a book by ID
-router.put("/:id", bookController.updateBookById);
-
 // Route to delete a book by ID
 router.delete("/:id", bookController.deleteBookById);
 
@@ -52,5 +49,14 @@ router.get("/search/:key", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+// Route to update a book by ID
+router.put(
+  "/update/:id",
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "pdf", maxCount: 1 },
+  ]),
+  bookController.updateBookById
+);
 
 module.exports = router;
