@@ -14,7 +14,9 @@ const Nav = ({ isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin }) => {
   };
 
   const firstName = localStorage.getItem("firstName");
-
+  const handleUpdateBook = (id) => {
+    navigate("/updatebook");
+  };
   return (
     <nav className="navbar">
       <ul className="navbar-list">
@@ -35,7 +37,11 @@ const Nav = ({ isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin }) => {
                 List Book
               </Link>
             </li>
-            {/* Display user's first name next to Logout */}
+            <li className="navbar-item">
+              <button onClick={handleUpdateBook} style={{ display: "none" }}>
+                Update Book
+              </button>
+            </li>
             <li className="navbar-item">
               <span className="navbar-link" onClick={handleLogout}>
                 Logout

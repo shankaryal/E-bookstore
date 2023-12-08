@@ -54,7 +54,7 @@ const AddBook = () => {
         <input type="text" id="publisher" name="publisher" />
         Description:
         <textarea name="description" rows="4"></textarea>
-        <label htmlFor="price">Price:</label>
+        Price:
         <input type="number" id="price" name="price" />
         Image:
         <input type="file" id="image" name="image" accept="image/*" />

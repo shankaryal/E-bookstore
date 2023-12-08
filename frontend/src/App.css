@@ -308,3 +308,53 @@ input[type="submit"] {
   transform: translateY(-50%);
   cursor: pointer;
 }
+/* Pagination container */
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  padding: 0;
+}
+
+/* Pagination item */
+.page-item {
+  margin: 0 5px;
+}
+
+/* Pagination button */
+.page-link {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Active page button */
+.page-link.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+  font-weight: bold;
+}
+
+/* Previous and Next buttons */
+.page-link.prev-next {
+  background-color: #f8f9fa;
+  color: #333;
+  border-color: #ccc;
+}
+.footer {
+  background-color: #f0f0f0;
+  padding: 20px;
+  text-align: center;
+  margin-top: auto;
+}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

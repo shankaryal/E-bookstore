@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../App.css"; //
+import "../../App.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -9,13 +9,15 @@ const HomePage = () => {
   const [tempBookList, setTempBookList] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [booksPerPage] = useState(10);
 
   useEffect(() => {
     async function fetchBooks() {
       try {
         setLoading(true);
         const response = await axios.get("http://localhost:8000/books");
-        setBookList(response.data);
+        setBookList(response.data.reverse());
         setTempBookList(response.data);
         setLoading(false);
       } catch (error) {
@@ -56,6 +58,26 @@ const HomePage = () => {
     };
   }, [searchText, tempBookList]);
 
+  const indexOfLastBook = currentPage * booksPerPage;
+  const indexOfFirstBook = indexOfLastBook - booksPerPage;
+  const currentBooks = bookList.slice(indexOfFirstBook, indexOfLastBook);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const handlePrevClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    const nextPage = currentPage + 1;
+
+    if (nextPage <= Math.ceil(bookList.length / booksPerPage)) {
+      setCurrentPage(nextPage);
+    }
+  };
+
   return (
     <>
       <div className="search-bar">
@@ -70,8 +92,8 @@ const HomePage = () => {
         <div className="loading">Loading...</div>
       ) : (
         <div className="book-container">
-          {bookList.length > 0 ? (
-            bookList.map((book) => (
+          {currentBooks.length > 0 ? (
+            currentBooks.map((book) => (
               <div
                 onClick={() =>
                   navigate("/explore", {
@@ -102,6 +124,36 @@ const HomePage = () => {
           )}
         </div>
       )}
+      <ul className="pagination">
+        {currentPage > 1 && (
+          <li className="page-item">
+            <button onClick={handlePrevClick} className="page-link">
+              Previous
+            </button>
+          </li>
+        )}
+        {Array.from({ length: Math.ceil(bookList.length / booksPerPage) }).map(
+          (_, index) => (
+            <li key={index} className="page-item">
+              <button
+                onClick={() => paginate(index + 1)}
+                className={
+                  currentPage === index + 1 ? "page-link active" : "page-link"
+                }
+              >
+                {index + 1}
+              </button>
+            </li>
+          )
+        )}
+        {currentPage < Math.ceil(bookList.length / booksPerPage) && (
+          <li className="page-item">
+            <button onClick={handleNextClick} className="page-link">
+              Next
+            </button>
+          </li>
+        )}
+      </ul>
     </>
   );
 };
