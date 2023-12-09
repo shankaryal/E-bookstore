@@ -358,3 +358,56 @@ input[type="submit"] {
   flex-direction: column;
   min-height: 100vh;
 }
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.popup-container.active {
+  display: flex;
+}
+
+.pdf-content {
+  position: relative;
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+  background: white;
+  padding: 20px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1001;
+  background: #f18181;
+  border: none;
+  cursor: pointer;
+}
+.book-explore {
+  width: 70%;
+  flex-direction: column;
+  padding: 14px;
+  box-shadow: 0 0 5px #ccc;
+
+  margin: 120px;
+
+  cursor: pointer;
+  position: relative;
+}
+
+.book-image {
+  height: 250px;
+  width: 250px;
+  object-fit: contain;
+}

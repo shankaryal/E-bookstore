@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../../App.css";
+import { Document, Page, pdfjs } from "react-pdf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ListBook = () => {
   const [books, setBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [booksPerPage] = useState(10); // Number of books per page
+  const [booksPerPage] = useState(10);
+  const [showPDF, setShowPDF] = useState(false);
 
   useEffect(() => {
     async function fetchBooks() {
@@ -53,6 +57,9 @@ const ListBook = () => {
       setCurrentPage(nextPage);
     }
   };
+  const togglePDFView = () => {
+    setShowPDF(!showPDF);
+  };
 
   return (
     <div>
@@ -84,13 +91,24 @@ const ListBook = () => {
                 />
               </td>
               <td>
-                <a
-                  href={`http://localhost:8000/${book.pdf}`} // Construct complete URL for the PDF
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  PDF Link
-                </a>
+                {book.pdf && (
+                  <div>
+                    <button onClick={togglePDFView}>View Book</button>
+                  </div>
+                )}
+
+                <div className={`popup-container ${showPDF ? "active" : ""}`}>
+                  <button onClick={togglePDFView} className="close-button">
+                    Close
+                  </button>
+                  <div className="pdf-content">
+                    {showPDF && (
+                      <Document file={`http://localhost:8000/${book.pdf}`}>
+                        <Page pageNumber={1} width={600} />
+                      </Document>
+                    )}{" "}
+                  </div>
+                </div>
               </td>
               <td>
                 <Link to={`/updateBook/${book._id}`} state={{ book }}>
