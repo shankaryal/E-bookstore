@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Comment = require("./Comment"); // Import Comment model
 
 const bookSchema = new mongoose.Schema({
   name: String,
@@ -9,14 +10,8 @@ const bookSchema = new mongoose.Schema({
   price: Number,
   image: String,
   pdf: String,
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment",
-    },
-  ],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }], // Reference to comments using the Comment model
 });
-
-const Book = mongoose.model("books", bookSchema);
+const Book = mongoose.model("Book", bookSchema);
 
 module.exports = Book;
